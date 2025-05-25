@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
 
@@ -18,6 +17,9 @@ public class Usuario {
     private String username;
     private String password;
     private String role;
+
+    public Usuario() {
+    }
 
     public Usuario(String username, String password, String role) {
         this.username = username;
