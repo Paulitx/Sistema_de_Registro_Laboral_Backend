@@ -24,7 +24,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
     @Bean(name = "personas")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema personaSchema) {
+    public DefaultWsdl11Definition defaultWsdl11Definition1(XsdSchema personaSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("PersonaPort");
         wsdl11Definition.setLocationUri("/ws");
@@ -33,8 +33,23 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return wsdl11Definition;
     }
 
+    @Bean(name = "oficinas")
+    public DefaultWsdl11Definition defaultWsdl11Definition2(XsdSchema oficinaSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+        wsdl11Definition.setPortTypeName("OficinaPort");
+        wsdl11Definition.setLocationUri("/ws");
+        wsdl11Definition.setTargetNamespace("http://soapcrud.una.ac.cr/ws/oficina");
+        wsdl11Definition.setSchema(oficinaSchema);
+        return wsdl11Definition;
+    }
+
     @Bean
     public XsdSchema personaSchema() {
         return new SimpleXsdSchema(new org.springframework.core.io.ClassPathResource("personas.xsd"));
+    }
+
+    @Bean
+    public XsdSchema oficinaSchema() {
+        return new SimpleXsdSchema(new org.springframework.core.io.ClassPathResource("oficinas.xsd"));
     }
 }

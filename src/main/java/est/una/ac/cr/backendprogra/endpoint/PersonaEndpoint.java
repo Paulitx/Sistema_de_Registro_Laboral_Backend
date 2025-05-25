@@ -1,6 +1,5 @@
 package est.una.ac.cr.backendprogra.endpoint;
 
-
 import est.una.ac.cr.backendprogra.dto.PersonaType;
 import est.una.ac.cr.backendprogra.entidad.Persona;
 import est.una.ac.cr.backendprogra.service.PersonaService;
