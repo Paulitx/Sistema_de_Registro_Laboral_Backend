@@ -1,9 +1,6 @@
 package est.una.ac.cr.backendprogra.entidad;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +16,9 @@ public class Registro {
     private Integer id;
     private String tipo;
     private LocalDateTime fechaHora;
+
+    @ManyToOne
+    private Persona persona;
 
     public Integer getId() {
         return id;
@@ -42,5 +42,13 @@ public class Registro {
 
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 }
