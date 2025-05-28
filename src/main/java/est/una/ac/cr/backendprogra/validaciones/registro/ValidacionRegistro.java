@@ -7,9 +7,9 @@ import java.util.List;
 
 @Service
 public class ValidacionRegistro {
-    @Autowired
-    private List<IValidadorAgregarRegistro> validadoresAgregar;
-
-    @Autowired
-    private List<IValidadorActualizarRegistro> validadoresActualizar;
+//    @Autowired
+//    private List<IValidadorAgregarRegistro> validadoresAgregar;
+//
+//    @Autowired
+//    private List<IValidadorActualizarRegistro> validadoresActualizar;
 }

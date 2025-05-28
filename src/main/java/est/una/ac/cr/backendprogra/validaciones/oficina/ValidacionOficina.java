@@ -8,11 +8,11 @@ import java.util.List;
 @Service
 public class ValidacionOficina {
 
-    @Autowired
-    private List<IValidadorRegistroOficina> validadoresRegistros;
-
-    @Autowired
-    private List<IValidadorActualizarOficina> validadoresActualizar;
-
+//    @Autowired
+//    private List<IValidadorRegistroOficina> validadoresRegistros;
+//
+//    @Autowired
+//    private List<IValidadorActualizarOficina> validadoresActualizar;
+//
 
 }

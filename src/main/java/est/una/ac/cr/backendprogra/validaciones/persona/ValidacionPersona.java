@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public class ValidacionPersona {
 
-    @Autowired
-    private List<IValidadorRegistroPersona> validadoresRegistros;
-
-    @Autowired
-    private List<IValidadorActualizarPersona> validadoresActualizar;
+//    @Autowired
+//    private List<IValidadorRegistroPersona> validadoresRegistros;
+//
+//    @Autowired
+//    private List<IValidadorActualizarPersona> validadoresActualizar;
 }
