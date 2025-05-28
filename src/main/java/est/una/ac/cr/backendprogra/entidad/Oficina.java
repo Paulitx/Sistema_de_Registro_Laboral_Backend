@@ -16,6 +16,8 @@ public class Oficina {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
+    private String ubicacion;
+    private int limitePersonas;
 
     public Integer getId() {
         return id;
@@ -31,5 +33,21 @@ public class Oficina {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public int getLimitePersonas() {
+        return limitePersonas;
+    }
+
+    public void setLimitePersonas(int limitePersonas) {
+        this.limitePersonas = limitePersonas;
     }
 }

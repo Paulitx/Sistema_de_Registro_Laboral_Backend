@@ -17,6 +17,9 @@ public class Persona {
     private String email;
     private String direccion;
     private LocalDate fechaNacimiento;
+    private String telefono;
+    private String cargo;
+    private Boolean estado;
 
     @ManyToOne
     private Oficina oficina;
@@ -75,5 +78,29 @@ public class Persona {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 }

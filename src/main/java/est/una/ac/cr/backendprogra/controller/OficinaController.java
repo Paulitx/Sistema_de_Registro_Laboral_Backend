@@ -27,7 +27,9 @@ public class OficinaController {
     }
 
     @PostMapping
-    public Oficina crearOficina (@RequestBody Oficina oficina) { return oficinaRepository.save(oficina); }
+    public Oficina crearOficina (@RequestBody Oficina oficina) {
+        return oficinaRepository.save(oficina);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Oficina> actualizarOficina (@PathVariable Integer id, @RequestBody Oficina oficinaActualizada){
@@ -35,6 +37,9 @@ public class OficinaController {
         if (oficina.isPresent()) {
             Oficina oficinaCreada = oficina.get();
             oficinaCreada.setNombre(oficinaActualizada.getNombre());
+            oficinaCreada.setUbicacion(oficinaActualizada.getUbicacion());
+            oficinaCreada.setLimitePersonas(oficinaActualizada.getLimitePersonas());
+
             oficinaRepository.save(oficinaCreada);
             return ResponseEntity.ok(oficinaCreada);
         }

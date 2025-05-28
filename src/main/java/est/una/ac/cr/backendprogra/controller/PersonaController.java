@@ -43,6 +43,9 @@ public class PersonaController {
             personaCreada.setDireccion(personaActualizada.getDireccion());
             personaCreada.setFechaNacimiento(personaActualizada.getFechaNacimiento());
             personaCreada.setOficina(personaActualizada.getOficina());
+            personaCreada.setTelefono(personaActualizada.getTelefono());
+            personaCreada.setCargo(personaActualizada.getCargo());
+            personaCreada.setEstado(personaActualizada.getEstado());
 
             personaRepository.save(personaCreada);
             return ResponseEntity.ok(personaCreada);
