@@ -39,6 +39,7 @@ public class OficinaController {
             oficinaCreada.setNombre(oficinaActualizada.getNombre());
             oficinaCreada.setUbicacion(oficinaActualizada.getUbicacion());
             oficinaCreada.setLimitePersonas(oficinaActualizada.getLimitePersonas());
+            oficinaCreada.setPersonasActuales(oficinaActualizada.getPersonasActuales());
 
             oficinaRepository.save(oficinaCreada);
             return ResponseEntity.ok(oficinaCreada);

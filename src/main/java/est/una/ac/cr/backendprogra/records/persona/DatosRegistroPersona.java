@@ -15,5 +15,5 @@ public record DatosRegistroPersona(@NotBlank String idUsuario,
                                    @NotBlank String telefono,
                                    @NotBlank String cargo,
                                    @NotNull Boolean estado,
-                                   @NotNull Oficina oficina) {
+                                   @NotNull Integer oficina) {
 }

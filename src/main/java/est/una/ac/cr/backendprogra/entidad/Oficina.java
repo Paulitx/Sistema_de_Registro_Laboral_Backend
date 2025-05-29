@@ -18,6 +18,15 @@ public class Oficina {
     private String nombre;
     private String ubicacion;
     private int limitePersonas;
+    private int personasActuales;
+
+    public int getPersonasActuales() {
+        return personasActuales;
+    }
+
+    public void setPersonasActuales(int personasActuales) {
+        this.personasActuales = personasActuales;
+    }
 
     public Integer getId() {
         return id;
