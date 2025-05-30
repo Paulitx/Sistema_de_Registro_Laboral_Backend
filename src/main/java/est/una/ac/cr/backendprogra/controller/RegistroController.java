@@ -1,6 +1,7 @@
 package est.una.ac.cr.backendprogra.controller;
 
 import est.una.ac.cr.backendprogra.entidad.Registro;
+import est.una.ac.cr.backendprogra.records.registro.DatosActualizarRegistro;
 import est.una.ac.cr.backendprogra.records.registro.DatosAgregarRegistro;
 import est.una.ac.cr.backendprogra.repository.RegistroRepository;
 import est.una.ac.cr.backendprogra.service.RegistroService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,7 @@ public class RegistroController {
     @PostMapping
     public ResponseEntity<?> crearRegistro(@Valid @RequestBody DatosAgregarRegistro registro) {
         try {
-            Registro nuevoRegistro = registroService.ingresoRegitro(
-                    registro.personaId(), registro.tipo(), registro.fechaHora());
+            Registro nuevoRegistro = registroService.ingresoRegitro(registro);
             return ResponseEntity.ok(nuevoRegistro);
         } catch (RuntimeException e) {
             //Esto muestra el mensaje de errror
@@ -53,17 +54,16 @@ public class RegistroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Registro> actualizarRegistro(@PathVariable Integer id, @RequestBody Registro registroActualizado) {
-        Optional<Registro> registro = registroRepository.findById(id);
-        if (registro.isPresent()) {
-            Registro registroCreado = registro.get();
-            registroCreado.setTipo(registroActualizado.getTipo());
-            registroCreado.setFechaHora(registroActualizado.getFechaHora());
-
-            registroRepository.save(registroCreado);
-            return ResponseEntity.ok(registroCreado);
+        public ResponseEntity<?> actualizarRegistro(@PathVariable Integer id, @RequestBody @Valid DatosActualizarRegistro registroExistente) {
+        try {
+            Registro registroActualizado = registroService.actualizarRegistro(id, registroExistente);
+            return ResponseEntity.ok(registroActualizado);
+        } catch (RuntimeException e) {
+            //Esto muestra el mensaje de errror
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -94,4 +94,19 @@ public class RegistroController {
         return registro.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/tipo")
+    public ResponseEntity<List<Registro>> obtenerRegistroTipo(@RequestParam String tipo){
+        List<Registro> listado = registroRepository.findByTipoContainingIgnoreCase(tipo);
+        return ResponseEntity.ok(listado);
+    }
+    @GetMapping("/fechaHora")
+    public ResponseEntity<List<Registro>> obtenerRegistroFechaHora(@RequestParam LocalDateTime fechaHora){
+        List<Registro> listado = registroRepository.findByFechaHora(fechaHora);
+        return ResponseEntity.ok(listado);
+    }
+    @GetMapping("/persona")
+    public ResponseEntity<List<Registro>> obtenerRegistroTelefono(@RequestParam Integer personaId){
+        List<Registro> listado = registroRepository.findByPersonaId(personaId);
+        return ResponseEntity.ok(listado);
+    }
 }

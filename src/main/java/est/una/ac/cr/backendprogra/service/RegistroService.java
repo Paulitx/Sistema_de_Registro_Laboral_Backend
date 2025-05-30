@@ -6,6 +6,8 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Cell;
+import est.una.ac.cr.backendprogra.records.registro.DatosActualizarRegistro;
+import est.una.ac.cr.backendprogra.records.registro.DatosAgregarRegistro;
 import jakarta.servlet.http.HttpServletResponse;
 import est.una.ac.cr.backendprogra.entidad.Oficina;
 import est.una.ac.cr.backendprogra.entidad.Persona;
@@ -40,24 +42,37 @@ public class RegistroService {
     @Autowired
     ValidacionRegistro validacionRegistro;
 
-    public Registro ingresoRegitro(Integer personaId, String tipo, LocalDateTime fechaHora){
-        Persona persona = personaRepository.findById(personaId).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
+    public Registro ingresoRegitro(DatosAgregarRegistro registroDTO){
+        Persona persona = personaRepository.findById(registroDTO.personaId()).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
 
-        Oficina oficina=persona.getOficina();
-        validacionRegistro.validar(personaId, oficina.getId(), tipo);
+        Oficina oficina = persona.getOficina();
 
         Registro nuevoRegistro = new Registro();
         nuevoRegistro.setPersona(persona);
-        nuevoRegistro.setTipo(tipo);
-        nuevoRegistro.setFechaHora(fechaHora);
+        nuevoRegistro.setTipo(registroDTO.tipo());
+        nuevoRegistro.setFechaHora(registroDTO.fechaHora());
 
-        if ("Entrada".equalsIgnoreCase(tipo)) {
+        validacionRegistro.validar(nuevoRegistro);
+        if ("Entrada".equalsIgnoreCase(registroDTO.tipo())) {
             oficina.setPersonasActuales(oficina.getPersonasActuales() + 1);
-        } else if ("Salida".equalsIgnoreCase(tipo)) {
+        } else if ("Salida".equalsIgnoreCase(registroDTO.tipo())) {
             oficina.setPersonasActuales(oficina.getPersonasActuales() - 1);
         }
         return registroRepository.save(nuevoRegistro);
     }
+    public Registro actualizarRegistro(Integer id, DatosActualizarRegistro registroDTO){
+        Registro registroExistente = registroRepository.findById(id).orElseThrow(() ->new RuntimeException("Registro no encontrado"));
+        Persona persona = personaRepository.findById(registroDTO.personaId()).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
+
+        registroExistente.setPersona(persona);
+        registroExistente.setFechaHora(registroDTO.fechaHora());
+
+        validacionRegistro.validar(registroExistente);
+        return registroRepository.save(registroExistente);
+    }
+
+
+
 
     public void eliminarRegistro(Integer id){
         Registro registro = registroRepository.findById(id).orElseThrow(() -> new RuntimeException("Registro no encontrado"));
@@ -71,7 +86,7 @@ public class RegistroService {
         oficinaRepository.save(oficina);
         registroRepository.delete(registro);
     }
-    //actualizar si hace falta
+
 
 
 

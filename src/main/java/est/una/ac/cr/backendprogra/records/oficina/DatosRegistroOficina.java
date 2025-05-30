@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 public record DatosRegistroOficina(@NotBlank String nombre,
                                    @NotBlank String ubicacion,
-                                   @NotNull int limitePersonas) {
+                                   @NotNull  int limitePersonas) implements DatosOficina {
 }

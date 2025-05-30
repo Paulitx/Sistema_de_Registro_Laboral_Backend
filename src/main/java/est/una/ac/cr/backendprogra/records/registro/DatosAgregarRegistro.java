@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 
 public record DatosAgregarRegistro(@NotBlank String tipo,
                                    @NotNull LocalDateTime fechaHora,
-                                   @NotNull Integer personaId) {
+                                   @NotNull Integer personaId)  implements DatosRegistro{
 }

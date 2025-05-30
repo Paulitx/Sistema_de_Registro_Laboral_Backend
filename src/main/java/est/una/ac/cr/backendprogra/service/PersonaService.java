@@ -3,12 +3,16 @@ package est.una.ac.cr.backendprogra.service;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import est.una.ac.cr.backendprogra.entidad.Oficina;
 import est.una.ac.cr.backendprogra.entidad.Persona;
-import est.una.ac.cr.backendprogra.entidad.Registro;
+import est.una.ac.cr.backendprogra.records.oficina.DatosActualizarOficina;
+import est.una.ac.cr.backendprogra.records.persona.DatosActualizarPersona;
+import est.una.ac.cr.backendprogra.records.persona.DatosPersona;
+import est.una.ac.cr.backendprogra.records.persona.DatosRegistroPersona;
+import est.una.ac.cr.backendprogra.repository.OficinaRepository;
 import est.una.ac.cr.backendprogra.repository.PersonaRepository;
+import est.una.ac.cr.backendprogra.validaciones.persona.ValidacionPersona;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,10 +30,42 @@ public class PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
 
+    @Autowired
+    private OficinaRepository oficinaRepository;
+    @Autowired
+    ValidacionPersona validacionPersona;
+
     public List<Persona> listarPersonas() {
         return personaRepository.findAll();
     }
+    private Persona seteoDatos(Persona persona, DatosPersona personaDTO) {
+        Oficina oficina = oficinaRepository.findById(personaDTO.oficina()).orElseThrow(() -> new RuntimeException("Oficina no encontrada"));
 
+        persona.setIdUsuario(personaDTO.idUsuario());
+        persona.setNombre(personaDTO.nombre());
+        persona.setEmail(personaDTO.email());
+        persona.setDireccion(personaDTO.direccion());
+        persona.setFechaNacimiento(personaDTO.fechaNacimiento());
+        persona.setTelefono(personaDTO.telefono());
+        persona.setCargo(personaDTO.cargo());
+        persona.setEstado(personaDTO.estado());
+        persona.setOficina(oficina);
+
+        return persona;
+    }
+    ///ingresar
+    public Persona ingresarPersona(DatosRegistroPersona personaDTO) {
+        Persona persona = seteoDatos(new Persona(), personaDTO);
+        validacionPersona.validar(persona);
+        return personaRepository.save(persona);
+    }
+    //actualizar
+    public Persona actualizaPersona(Integer id, DatosActualizarPersona personaDTO) {
+        Persona persona = personaRepository.findById(id).orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+        Persona personaActualizada = seteoDatos(persona, personaDTO);
+        validacionPersona.validar(personaActualizada);
+        return personaRepository.save(personaActualizada);
+    }
 
 
     ///exportaciones
