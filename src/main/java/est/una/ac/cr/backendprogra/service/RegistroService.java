@@ -71,17 +71,28 @@ public class RegistroService {
         return registroRepository.save(registroExistente);
     }
 
-
-
-
     public void eliminarRegistro(Integer id){
-        Registro registro = registroRepository.findById(id).orElseThrow(() -> new RuntimeException("Registro no encontrado"));
+        Registro registro = registroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
         Persona persona = registro.getPersona();
         Oficina oficina = persona.getOficina();
-        if("Entrada".equalsIgnoreCase((registro.getTipo()))){
-            oficina.setPersonasActuales(Math.max(0, oficina.getPersonasActuales() - 1));
-        }else if("Salida".equalsIgnoreCase((registro.getTipo()))){
-            oficina.setPersonasActuales(oficina.getPersonasActuales() + 1);
+        // Verificar si el tipo es "Entrada"
+        if ("Entrada".equalsIgnoreCase(registro.getTipo())) {
+            boolean tieneSalidaPosterior = registroRepository.existsByPersonaIdAndTipoAndFechaHoraAfter(
+                    persona.getId(), "Salida", registro.getFechaHora());
+
+            if (!tieneSalidaPosterior) {
+                oficina.setPersonasActuales(Math.max(0, oficina.getPersonasActuales() - 1));
+            }
+        }
+        // Verificar si el tipo es "Salida"
+        else if ("Salida".equalsIgnoreCase(registro.getTipo())) {
+            boolean tieneEntradaAnterior = registroRepository.existsByPersonaIdAndTipoAndFechaHoraBefore(
+                    persona.getId(), "Entrada", registro.getFechaHora());
+
+            if (tieneEntradaAnterior) {
+                oficina.setPersonasActuales(oficina.getPersonasActuales() + 1);
+            }
         }
         oficinaRepository.save(oficina);
         registroRepository.delete(registro);

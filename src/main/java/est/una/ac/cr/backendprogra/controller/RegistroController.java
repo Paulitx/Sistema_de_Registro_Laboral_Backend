@@ -1,5 +1,6 @@
 package est.una.ac.cr.backendprogra.controller;
 
+import est.una.ac.cr.backendprogra.entidad.Persona;
 import est.una.ac.cr.backendprogra.entidad.Registro;
 import est.una.ac.cr.backendprogra.records.registro.DatosActualizarRegistro;
 import est.una.ac.cr.backendprogra.records.registro.DatosAgregarRegistro;
@@ -31,14 +32,18 @@ public class RegistroController {
     @Autowired
     private RegistroService registroService;
 
-    ///paginacion
     @GetMapping
+    public ResponseEntity<List<Registro>> obtenerTodosRegistro() {
+        List<Registro> registros = registroRepository.findAll();
+        return ResponseEntity.ok(registros);
+    }
+    //paginacion
+    @GetMapping("/paginacion")
     public ResponseEntity<Page<Registro>> obtenerRegistros(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("fechaHora").descending());
         Page<Registro> registrosPaginados = registroRepository.findAll(pageable);
         return ResponseEntity.ok(registrosPaginados);
     }
-
 
     @PostMapping
     public ResponseEntity<?> crearRegistro(@Valid @RequestBody DatosAgregarRegistro registro) {

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Integer> {
-
     //filtrados
     List<Persona> findByNombreContainingIgnoreCase(String nombre);
     List<Persona> findByEmailContainingIgnoreCase(String email);

@@ -37,8 +37,14 @@ public class PersonaController {
     private PersonaService personaService;
 
 
-    //paginacion
+
     @GetMapping
+    public ResponseEntity<List<Persona>> obtenerTodasPersonas() {
+        List<Persona> personas = personaRepository.findAll();
+        return ResponseEntity.ok(personas);
+    }
+    //paginacion
+    @GetMapping("/paginado")
     public ResponseEntity<Page<Persona>> personaPaginados(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Persona> personasPaginados = personaRepository.findAll(pageable);
