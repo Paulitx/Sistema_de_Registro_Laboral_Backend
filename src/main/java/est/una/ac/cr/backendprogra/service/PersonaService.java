@@ -32,12 +32,14 @@ public class PersonaService {
 
     @Autowired
     private OficinaRepository oficinaRepository;
+
     @Autowired
     ValidacionPersona validacionPersona;
 
     public List<Persona> listarPersonas() {
         return personaRepository.findAll();
     }
+
     private Persona seteoDatos(Persona persona, DatosPersona personaDTO) {
         Oficina oficina = oficinaRepository.findById(personaDTO.oficina()).orElseThrow(() -> new RuntimeException("Oficina no encontrada"));
 

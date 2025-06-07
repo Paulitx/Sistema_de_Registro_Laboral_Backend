@@ -1,22 +1,22 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:tns="http://soapcrud.una.ac.cr/ws/persona"
-           targetNamespace="http://soapcrud.una.ac.cr/ws/persona"
+           xmlns:tns="http://soapcrud.una.ac.cr/ws/registro"
+           targetNamespace="http://soapcrud.una.ac.cr/ws/registro"
            elementFormDefault="qualified">
 
-    <xs:element name="getPersonasRequest" type="tns:GetPersonasRequest"/>
-    <xs:element name="getPersonasResponse" type="tns:GetPersonasResponse"/>
+    <xs:element name="getRegistrosRequest" type="tns:GetRegistrosRequest"/>
+    <xs:element name="getRegistrosResponse" type="tns:GetRegistrosResponse"/>
 
-    <xs:complexType name="GetPersonasRequest">
+    <xs:complexType name="GetRegistrosRequest">
         <xs:sequence/>
     </xs:complexType>
 
-    <xs:complexType name="GetPersonasResponse">
+    <xs:complexType name="GetRegistrosResponse">
         <xs:sequence>
-            <xs:element name="persona" type="tns:PersonaType" maxOccurs="unbounded"/>
+            <xs:element name="registro" type="tns:RegistroType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="PersonaType">
+    <xs:complexType name="RegistroType">
         <xs:sequence>
             <xs:element name="id" type="xs:int"/>
             <xs:element name="idUsuario" type="xs:string"/>

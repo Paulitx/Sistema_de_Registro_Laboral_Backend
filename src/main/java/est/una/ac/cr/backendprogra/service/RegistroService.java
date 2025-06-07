@@ -42,6 +42,10 @@ public class RegistroService {
     @Autowired
     ValidacionRegistro validacionRegistro;
 
+    public List<Registro> listarRegistros(){
+        return registroRepository.findAll();
+    }
+
     public Registro ingresoRegitro(DatosAgregarRegistro registroDTO){
         Persona persona = personaRepository.findById(registroDTO.personaId()).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
 
