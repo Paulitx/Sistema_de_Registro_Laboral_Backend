@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,12 +34,14 @@ public class RegistroController {
     private RegistroService registroService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerTodosRegistro() {
         List<Registro> registros = registroRepository.findAll();
         return ResponseEntity.ok(registros);
     }
     //paginacion
     @GetMapping("/paginacion")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<Page<Registro>> obtenerRegistros(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("fechaHora").descending());
         Page<Registro> registrosPaginados = registroRepository.findAll(pageable);
@@ -46,6 +49,7 @@ public class RegistroController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
     public ResponseEntity<?> crearRegistro(@Valid @RequestBody DatosAgregarRegistro registro) {
         try {
             Registro nuevoRegistro = registroService.ingresoRegitro(registro);
@@ -59,6 +63,7 @@ public class RegistroController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
         public ResponseEntity<?> actualizarRegistro(@PathVariable Integer id, @RequestBody @Valid DatosActualizarRegistro registroExistente) {
         try {
             Registro registroActualizado = registroService.actualizarRegistro(id, registroExistente);
@@ -72,6 +77,7 @@ public class RegistroController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
     public ResponseEntity<Void> eliminarRegistro(@PathVariable Integer id) {
         try {
             registroService.eliminarRegistro(id);
@@ -84,32 +90,38 @@ public class RegistroController {
 
     /////exportaciones
     @GetMapping("/exportar/excel")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public void exportarExcel(HttpServletResponse response) throws IOException {
         registroService.exportarExcel(response);
     }
 
     @GetMapping("/exportar/pdf")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public void exportarPDF(HttpServletResponse response) throws IOException {
         registroService.exportarPDF(response);
     }
     //Filtrado
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<Registro> obtenerPorId(@PathVariable Integer id) {
         Optional<Registro> registro = registroRepository.findById(id);
         return registro.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/tipo")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroTipo(@RequestParam String tipo){
         List<Registro> listado = registroRepository.findByTipoContainingIgnoreCase(tipo);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/fechaHora")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroFechaHora(@RequestParam LocalDateTime fechaHora){
         List<Registro> listado = registroRepository.findByFechaHora(fechaHora);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/persona")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroTelefono(@RequestParam Integer personaId){
         List<Registro> listado = registroRepository.findByPersonaId(personaId);
         return ResponseEntity.ok(listado);

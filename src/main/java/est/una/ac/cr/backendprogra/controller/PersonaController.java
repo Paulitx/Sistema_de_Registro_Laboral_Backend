@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -39,21 +40,29 @@ public class PersonaController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerTodasPersonas() {
         List<Persona> personas = personaRepository.findAll();
         return ResponseEntity.ok(personas);
     }
     //paginacion
     @GetMapping("/paginado")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Page<Persona>> personaPaginados(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Persona> personasPaginados = personaRepository.findAll(pageable);
         return ResponseEntity.ok(personasPaginados);
     }
 
-
+    @GetMapping("/registro")
+    @PreAuthorize("hasAnyRole('REGISTRADOR')")
+    public ResponseEntity<List<Persona>> obtenerTodasPersonasRegistrador() {
+        List<Persona> personas = personaRepository.findAll();
+        return ResponseEntity.ok(personas);
+    }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> crearPersona(@RequestBody @Valid DatosRegistroPersona persona) {
         try {
             Persona nuevaPersona = personaService.ingresarPersona(persona);
@@ -67,6 +76,7 @@ public class PersonaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> actualizarPersona(@PathVariable Integer id, @RequestBody DatosActualizarPersona personaExistente){
         try {
             Persona personaActualizada = personaService.actualizaPersona(id, personaExistente);
@@ -80,6 +90,7 @@ public class PersonaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> eliminarPersona(@PathVariable Integer id){
         Optional<Persona> persona = personaRepository.findById(id);
         persona.ifPresent(value -> personaRepository.delete(value));
@@ -89,18 +100,21 @@ public class PersonaController {
 
     /////exportaciones
     @GetMapping("/exportar/excel")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public void exportarExcel(HttpServletResponse response) throws IOException {
         personaService.exportarExcel(response);
 
     }
 
     @GetMapping("/exportar/pdf")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public void exportarPDF(HttpServletResponse response) throws IOException {
         personaService.exportarPDF(response);
 
     }
     //filtrado
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Persona> obtenerPersona(@PathVariable Integer id){
         Optional<Persona> persona = personaRepository.findById(id);
         return persona.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -108,42 +122,50 @@ public class PersonaController {
     ///filtros
 
     @GetMapping("/nombre")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaNombre(@RequestParam String nombre){
         List<Persona> listado = personaRepository.findByNombreContainingIgnoreCase(nombre);
         return ResponseEntity.ok(listado);
     }
 
     @GetMapping("/Email")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaEmail(@RequestParam String email){
         List<Persona> listado = personaRepository.findByEmailContainingIgnoreCase(email);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/telefono")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaTelefono(@RequestParam String telefono){
         List<Persona> listado = personaRepository.findByTelefonoContainingIgnoreCase(telefono);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/direccion")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaDireccion(@RequestParam String direccion){
         List<Persona> listado = personaRepository.findByDireccionContainingIgnoreCase(direccion);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/fechaNacimineto")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaFechaNacimineto(@RequestParam LocalDate fechaNacimineto){
         List<Persona> listado = personaRepository.findByFechaNacimiento(fechaNacimineto);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/cargo")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaCargo(@RequestParam String cargo){
         List<Persona> listado = personaRepository.findByCargoContainingIgnoreCase(cargo);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/estado")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaEstado(@RequestParam Boolean estado){
         List<Persona> listado = personaRepository.findByEstado(estado);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/oficina")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaOficina(@RequestParam Integer idOficina){
         List<Persona> listado = personaRepository.findByOficinaId(idOficina);
         return ResponseEntity.ok(listado);

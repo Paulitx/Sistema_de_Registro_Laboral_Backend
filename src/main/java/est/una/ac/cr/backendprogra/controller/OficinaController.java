@@ -8,6 +8,7 @@ import est.una.ac.cr.backendprogra.service.OficinaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,9 +26,11 @@ public class OficinaController {
     private OficinaService oficinaService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public List<Oficina> obtenerTodas() { return oficinaRepository.findAll(); }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Oficina> obtenerPorId(@PathVariable Integer id){
 
         Optional<Oficina> oficina = oficinaRepository.findById(id);
@@ -35,6 +38,7 @@ public class OficinaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> crearOficina (@RequestBody @Valid DatosRegistroOficina oficina) {
         try {
             Oficina nuevaOficina = oficinaService.ingresoOficina(oficina);
@@ -48,6 +52,7 @@ public class OficinaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> actualizarOficina (@PathVariable Integer id, @RequestBody DatosActualizarOficina oficina){
         try {
             Oficina oficinaActualizada = oficinaService.actualizaOficina(id, oficina);
@@ -61,6 +66,7 @@ public class OficinaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> eliminarOficina (@PathVariable Integer id) {
         Optional <Oficina> oficina = oficinaRepository.findById(id);
         oficina.ifPresent(value -> oficinaRepository.delete(value));
@@ -69,21 +75,25 @@ public class OficinaController {
 
     ///filtrado
     @GetMapping("/nombre")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaNombre(@RequestParam String nombre){
         List<Oficina> listado = oficinaRepository.findByNombreContainingIgnoreCase(nombre);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/Email")
+    @GetMapping("/Ubicacion")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaUbicacion(@RequestParam String ubicacion){
         List<Oficina> listado = oficinaRepository.findByUbicacionContainingIgnoreCase(ubicacion);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/telefono")
+    @GetMapping("/limitePersonas")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaLimitePersonas(@RequestParam int limitePersonas){
         List<Oficina> listado = oficinaRepository.findByLimitePersonas(limitePersonas);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/direccion")
+    @GetMapping("/personasActuales")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaPersonasActuales(@RequestParam int personasActuales){
         List<Oficina> listado = oficinaRepository.findByPersonasActuales(personasActuales);
         return ResponseEntity.ok(listado);
