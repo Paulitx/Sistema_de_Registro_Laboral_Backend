@@ -5,13 +5,19 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PersonaType", propOrder = {
         "id",
         "idUsuario",
         "nombre",
         "email",
-        "direccion"
+        "direccion",
+        "fechaNacimiento",
+        "telefono",
+        "cargo",
+        "estado"
 })
 public class PersonaType {
 
@@ -20,6 +26,10 @@ public class PersonaType {
     private String nombre;
     private String email;
     private String direccion;
+    private LocalDate fechaNacimiento;
+    private String telefono;
+    private String cargo;
+    private Boolean estado;
 
     public Integer getId() {
         return id;
@@ -59,6 +69,38 @@ public class PersonaType {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 }
 

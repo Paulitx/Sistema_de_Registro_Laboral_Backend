@@ -33,6 +33,10 @@ public class PersonaEndpoint {
             personaType.setNombre(persona.getNombre());
             personaType.setEmail(persona.getEmail());
             personaType.setDireccion(persona.getDireccion());
+            personaType.setFechaNacimiento(persona.getFechaNacimiento());
+            personaType.setTelefono(persona.getTelefono());
+            personaType.setCargo(persona.getCargo());
+            personaType.setEstado(persona.getEstado());
             response.getPersonas().add(personaType);
         }
 
