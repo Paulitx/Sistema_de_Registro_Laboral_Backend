@@ -55,7 +55,7 @@ public class PersonaController {
     }
 
     @GetMapping("/registro")
-    @PreAuthorize("hasAnyRole('REGISTRADOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','REGISTRADOR')")
     public ResponseEntity<List<Persona>> obtenerTodasPersonasRegistrador() {
         List<Persona> personas = personaRepository.findAll();
         return ResponseEntity.ok(personas);
