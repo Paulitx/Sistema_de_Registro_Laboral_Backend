@@ -1,8 +1,6 @@
 package est.una.ac.cr.backendprogra.controller;
 
-import est.una.ac.cr.backendprogra.entidad.Oficina;
 import est.una.ac.cr.backendprogra.entidad.Persona;
-import est.una.ac.cr.backendprogra.entidad.Registro;
 import est.una.ac.cr.backendprogra.records.persona.DatosActualizarPersona;
 import est.una.ac.cr.backendprogra.records.persona.DatosRegistroPersona;
 import est.una.ac.cr.backendprogra.repository.OficinaRepository;
@@ -52,6 +50,13 @@ public class PersonaController {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Persona> personasPaginados = personaRepository.findAll(pageable);
         return ResponseEntity.ok(personasPaginados);
+    }
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
+    public ResponseEntity<Persona> obtenerPersonasId(@PathVariable Integer id) {
+        return personaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/registro")

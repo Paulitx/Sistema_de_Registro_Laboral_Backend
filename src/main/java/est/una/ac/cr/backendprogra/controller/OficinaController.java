@@ -1,6 +1,7 @@
 package est.una.ac.cr.backendprogra.controller;
 
 import est.una.ac.cr.backendprogra.entidad.Oficina;
+import est.una.ac.cr.backendprogra.entidad.Persona;
 import est.una.ac.cr.backendprogra.records.oficina.DatosActualizarOficina;
 import est.una.ac.cr.backendprogra.records.oficina.DatosRegistroOficina;
 import est.una.ac.cr.backendprogra.repository.OficinaRepository;
@@ -35,6 +36,13 @@ public class OficinaController {
 
         Optional<Oficina> oficina = oficinaRepository.findById(id);
         return oficina.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
+    public ResponseEntity<Oficina> obtenerOficinasId(@PathVariable Integer id) {
+        return oficinaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
