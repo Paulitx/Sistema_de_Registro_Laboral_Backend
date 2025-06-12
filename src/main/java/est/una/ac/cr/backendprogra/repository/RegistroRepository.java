@@ -24,15 +24,18 @@ public interface RegistroRepository extends JpaRepository<Registro, Integer> {
     List<Registro> findByPersonaId(Integer personaId);
 
 
-    ///estadisticas
+    ///estadisticas, llamados a la base de datos para obtrener los datos para los graficos
 
-    @Query("SELECT r.persona.nombre, COUNT(r) FROM Registro r WHERE r.tipo = 'ENTRADA' GROUP BY r.persona.nombre ORDER BY COUNT(r) DESC")
+    @Query("SELECT r.persona.nombre, COUNT(r) FROM Registro r WHERE r.tipo = 'entrada' GROUP BY r.persona.nombre ORDER BY COUNT(r) DESC")
     List<Object[]> contarEntradasPorPersona();
 
-    @Query("SELECT r.persona.oficina.nombre, COUNT(r) FROM Registro r WHERE r.tipo = 'ENTRADA' GROUP BY r.persona.oficina.nombre ORDER BY COUNT(r) DESC")
+    @Query("SELECT r.persona.oficina.nombre, COUNT(r) FROM Registro r WHERE r.tipo = 'entrada' GROUP BY r.persona.oficina.nombre ORDER BY COUNT(r) DESC")
     List<Object[]> contarEntradasPorOficinaDePersona();
 
-    @Query("SELECT r.persona.nombre FROM Registro r WHERE r.tipo = 'ENTRADA' AND r.persona.id NOT IN (" + "SELECT r2.persona.id FROM Registro r2 WHERE r2.tipo = 'SALIDA') GROUP BY r.persona.nombre")
+    @Query("SELECT r.persona.nombre FROM Registro r WHERE r.tipo = 'entrada' AND r.persona.id NOT IN (" + "SELECT r2.persona.id FROM Registro r2 WHERE r2.tipo = 'salida') GROUP BY r.persona.nombre")
     List<String> personasActualmenteDentro();
+
+    @Query("SELECT r FROM Registro r")
+    List<Registro> findAllRegistros();
 
 }

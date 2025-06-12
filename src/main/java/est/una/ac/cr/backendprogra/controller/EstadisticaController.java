@@ -1,9 +1,8 @@
 package est.una.ac.cr.backendprogra.controller;
 
 
-import est.una.ac.cr.backendprogra.repository.OficinaRepository;
+import est.una.ac.cr.backendprogra.entidad.Registro;
 import est.una.ac.cr.backendprogra.repository.RegistroRepository;
-import est.una.ac.cr.backendprogra.service.RegistroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +25,7 @@ public class EstadisticaController {
 
 
     ////Personas con mas ingresos
-    @GetMapping("/estadisticas/top-personas")
+    @GetMapping("/topPersonas")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerTopPersonasConMasEntradas() {
         List<Object[]> resultados = registroRepository.contarEntradasPorPersona();
@@ -40,7 +39,7 @@ public class EstadisticaController {
         return ResponseEntity.ok(respuesta);
     }
     ///oficinas con mas registros de entrada
-    @GetMapping("/estadisticas/top-oficinas")
+    @GetMapping("/topOficinas")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerTopOficinasConMasEntradas() {
         List<Object[]> resultados = registroRepository.contarEntradasPorOficinaDePersona();
@@ -56,7 +55,7 @@ public class EstadisticaController {
 
 
     ///cantidad de personas dentro de una oficina
-    @GetMapping("/estadisticas/personas-dentro")
+    @GetMapping("/personasDentro")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerPersonasActualmenteDentro() {
         List<String> nombres = registroRepository.personasActualmenteDentro();
