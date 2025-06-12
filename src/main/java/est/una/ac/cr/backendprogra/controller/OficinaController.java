@@ -30,20 +30,8 @@ public class OficinaController {
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public List<Oficina> obtenerTodas() { return oficinaRepository.findAll(); }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
-    public ResponseEntity<Oficina> obtenerPorId(@PathVariable Integer id){
 
-        Optional<Oficina> oficina = oficinaRepository.findById(id);
-        return oficina.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
-    public ResponseEntity<Oficina> obtenerOficinasId(@PathVariable Integer id) {
-        return oficinaRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -82,6 +70,15 @@ public class OficinaController {
     }
 
     ///filtrado
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
+    public ResponseEntity<Oficina> obtenerPorId(@PathVariable Integer id){
+        Optional<Oficina> oficina = oficinaRepository.findById(id);
+        return oficina.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
     @GetMapping("/nombre")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaNombre(@RequestParam String nombre){

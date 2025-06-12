@@ -51,13 +51,7 @@ public class PersonaController {
         Page<Persona> personasPaginados = personaRepository.findAll(pageable);
         return ResponseEntity.ok(personasPaginados);
     }
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
-    public ResponseEntity<Persona> obtenerPersonasId(@PathVariable Integer id) {
-        return personaRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
 
     @GetMapping("/registro")
     @PreAuthorize("hasAnyRole('ADMIN','REGISTRADOR')")

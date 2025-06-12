@@ -47,13 +47,7 @@ public class RegistroController {
         Page<Registro> registrosPaginados = registroRepository.findAll(pageable);
         return ResponseEntity.ok(registrosPaginados);
     }
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
-    public ResponseEntity<Registro> obtenerRegistroId(@PathVariable Integer id) {
-        return registroRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
