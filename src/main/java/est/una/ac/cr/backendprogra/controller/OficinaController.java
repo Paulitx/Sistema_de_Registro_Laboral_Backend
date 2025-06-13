@@ -8,6 +8,10 @@ import est.una.ac.cr.backendprogra.repository.OficinaRepository;
 import est.una.ac.cr.backendprogra.service.OficinaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +34,14 @@ public class OficinaController {
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public List<Oficina> obtenerTodas() { return oficinaRepository.findAll(); }
 
-
-
+    //paginacion
+    @GetMapping("/paginado")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
+    public ResponseEntity<Page<Oficina>> oficinasPaginadas(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Oficina> oficinasPaginadas = oficinaRepository.findAll(pageable);
+        return ResponseEntity.ok(oficinasPaginadas);
+    }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -70,37 +80,35 @@ public class OficinaController {
     }
 
     ///filtrado
-
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Oficina> obtenerPorId(@PathVariable Integer id){
         Optional<Oficina> oficina = oficinaRepository.findById(id);
         return oficina.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @GetMapping("/nombre")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaNombre(@RequestParam String nombre){
-        List<Oficina> listado = oficinaRepository.findByNombreContainingIgnoreCase(nombre);
+        List<Oficina> listado = oficinaRepository.buscarPorNombre(nombre);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/Ubicacion")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaUbicacion(@RequestParam String ubicacion){
-        List<Oficina> listado = oficinaRepository.findByUbicacionContainingIgnoreCase(ubicacion);
+        List<Oficina> listado = oficinaRepository.buscarPorUbicacion(ubicacion);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/limitePersonas")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaLimitePersonas(@RequestParam int limitePersonas){
-        List<Oficina> listado = oficinaRepository.findByLimitePersonas(limitePersonas);
+        List<Oficina> listado = oficinaRepository.buscarPorLimitePersonas(limitePersonas);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/personasActuales")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaPersonasActuales(@RequestParam int personasActuales){
-        List<Oficina> listado = oficinaRepository.findByPersonasActuales(personasActuales);
+        List<Oficina> listado = oficinaRepository.buscarPorPersonasActuales(personasActuales);
         return ResponseEntity.ok(listado);
     }
 }
