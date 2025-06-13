@@ -122,51 +122,53 @@ public class PersonaController {
 
     @GetMapping("/nombre")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
-    public ResponseEntity<List<Persona>> obtenerPersonaNombre(@RequestParam String nombre){
-        List<Persona> listado = personaRepository.findByNombreContainingIgnoreCase(nombre);
+    public ResponseEntity<List<Persona>> obtenerPersonaNombre(@RequestParam String nombre) {
+        List<Persona> listado = personaRepository.buscarPorNombre(nombre);
+        System.out.println(listado);
         return ResponseEntity.ok(listado);
     }
 
-    @GetMapping("/Email")
+
+    @GetMapping("/{email}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaEmail(@RequestParam String email){
-        List<Persona> listado = personaRepository.findByEmailContainingIgnoreCase(email);
+        List<Persona> listado = personaRepository.buscarPorEmail(email);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/telefono")
+    @GetMapping("/{telefono}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaTelefono(@RequestParam String telefono){
-        List<Persona> listado = personaRepository.findByTelefonoContainingIgnoreCase(telefono);
+        List<Persona> listado = personaRepository.buscarPorTelefono(telefono);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/direccion")
+    @GetMapping("/{direccion}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaDireccion(@RequestParam String direccion){
-        List<Persona> listado = personaRepository.findByDireccionContainingIgnoreCase(direccion);
+        List<Persona> listado = personaRepository.buscarPorDireccion(direccion);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/fechaNacimineto")
+    @GetMapping("/{fechaNacimineto}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaFechaNacimineto(@RequestParam LocalDate fechaNacimineto){
-        List<Persona> listado = personaRepository.findByFechaNacimiento(fechaNacimineto);
+        List<Persona> listado = personaRepository.buscarPorFechaNacimiento(fechaNacimineto);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/cargo")
+    @GetMapping("/{cargo}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaCargo(@RequestParam String cargo){
-        List<Persona> listado = personaRepository.findByCargoContainingIgnoreCase(cargo);
+        List<Persona> listado = personaRepository.buscarPorCargo(cargo);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/estado")
+    @GetMapping("/{estado}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaEstado(@RequestParam Boolean estado){
-        List<Persona> listado = personaRepository.findByEstado(estado);
+        List<Persona> listado = personaRepository.buscarPorEstado(estado);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/oficina")
+    @GetMapping("/{oficina}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerPersonaOficina(@RequestParam Integer idOficina){
-        List<Persona> listado = personaRepository.findByOficinaId(idOficina);
+        List<Persona> listado = personaRepository.buscarPorOficinaId(idOficina);
         return ResponseEntity.ok(listado);
     }
 
