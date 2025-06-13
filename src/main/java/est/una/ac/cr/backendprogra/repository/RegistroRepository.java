@@ -35,7 +35,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Integer> {
     @Query("SELECT r.persona.oficina.nombre, COUNT(r) FROM Registro r WHERE r.tipo = 'entrada' GROUP BY r.persona.oficina.nombre ORDER BY COUNT(r) DESC")
     List<Object[]> contarEntradasPorOficinaDePersona();
 
-    @Query("SELECT r.persona.nombre FROM Registro r WHERE r.tipo = 'entrada' AND r.persona.id NOT IN (" + "SELECT r2.persona.id FROM Registro r2 WHERE r2.tipo = 'salida') GROUP BY r.persona.nombre")
+    @Query("SELECT r.persona.nombre FROM Registro r WHERE r.id IN (SELECT MAX(r2.id) FROM Registro r2 GROUP BY r2.persona.id) AND r.tipo = 'entrada'")
     List<String> personasActualmenteDentro();
 
 }
