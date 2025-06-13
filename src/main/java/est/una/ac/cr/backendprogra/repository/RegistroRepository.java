@@ -35,7 +35,4 @@ public interface RegistroRepository extends JpaRepository<Registro, Integer> {
     @Query("SELECT r.persona.nombre FROM Registro r WHERE r.tipo = 'entrada' AND r.persona.id NOT IN (" + "SELECT r2.persona.id FROM Registro r2 WHERE r2.tipo = 'salida') GROUP BY r.persona.nombre")
     List<String> personasActualmenteDentro();
 
-    @Query("SELECT r FROM Registro r")
-    List<Registro> findAllRegistros();
-
 }
