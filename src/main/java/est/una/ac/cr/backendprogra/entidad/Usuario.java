@@ -3,7 +3,11 @@ package est.una.ac.cr.backendprogra.entidad;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
+/**
+ * Entidad Usuario, permite la creacion de tablas en la base de datos, ademas de que se le definen las variables para que una persona pueda entrar y tenga un rol.
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Entity
 @AllArgsConstructor
 public class Usuario {
@@ -23,7 +27,14 @@ public class Usuario {
         this.password = password;
         this.role = role;
     }
-
+    /**
+     * Métodos getters y setters para los atributos del usuario
+     * Permiten acceder y modificar los siguientes datos:
+     * id: Identificador único del usuario
+     * username: Nombre de usuario para login
+     * password: Contraseña del usuario
+     * role: Rol del usuario
+     */
     public String getRole() {
         return role;
     }

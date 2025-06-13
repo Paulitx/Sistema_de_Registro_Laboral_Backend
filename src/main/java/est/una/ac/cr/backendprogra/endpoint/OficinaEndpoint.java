@@ -10,7 +10,12 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.util.List;
-
+/**
+ * Endpoint que gestiona las operaciones relacionadas con oficinas
+ * Expone el servicio "listarOficinas", que permite obtener la lista completa de oficinas disponibles
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Endpoint
 public class OficinaEndpoint {
 
@@ -18,6 +23,15 @@ public class OficinaEndpoint {
 
     @Autowired
     private OficinaService oficinaService;
+
+    /**
+     * Maneja la petición SOAP para listar todas las oficinas
+     *
+     * Recibe una solicitud de tipo GetOficinasRequest y devuelve una respuesta GetOficinasResponse que contiene una lista de oficinas convertidas a objetos OficinaType para el formato soap
+     *
+     * @param request solicitud para obtener las oficinas
+     * @return respuesta con la lista de oficinas disponibles en el sistema
+     */
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getOficinasRequest")
     @ResponsePayload

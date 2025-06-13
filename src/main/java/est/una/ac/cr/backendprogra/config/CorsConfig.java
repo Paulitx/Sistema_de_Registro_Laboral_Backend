@@ -7,10 +7,19 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-
+/**
+ * Configuration estandar que ayuda a establecer los metodos GET,PORT,PUT Y DELETE para los controllers.
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Configuration
 public class CorsConfig {
 
+    /**
+     * Define la configuración de CORS para la aplicación
+     *
+     * @return un objeto {@link CorsConfigurationSource} que configura las reglas de CORS
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

@@ -7,7 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+/**
+ * Servicio que verifica la existencia de un usuario.
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
 
@@ -18,6 +22,13 @@ public class UsuarioDetailsService implements UserDetailsService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Obtiene un usuario por su nombre de usuario para la autenticacion
+     *
+     * @param username el nombre de usuario que se quiere cargar
+     * @return un objeto {@link UserDetails} que representa al usuario cargado
+     * @throws UsernameNotFoundException si no se encuentra un usuario con el nombre proporcionado
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username)

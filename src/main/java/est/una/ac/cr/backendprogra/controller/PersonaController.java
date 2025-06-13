@@ -23,7 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+/**
+ * Controlador de personas, permite todas las interacciones con el usuairo, gets, post, put y delete.
+ *
+ *  * tambien lo restringe segun su rol para evitar que usuarios no autorizados entren a secciones que no deben
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @RestController
 @RequestMapping("/api/persona")
 public class PersonaController {
@@ -35,15 +40,27 @@ public class PersonaController {
     @Autowired
     private PersonaService personaService;
 
-
-
+    /**
+     * Obtiene la lista completa de personas
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las personas en la base de datos
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Persona>> obtenerTodasPersonas() {
         List<Persona> personas = personaRepository.findAll();
         return ResponseEntity.ok(personas);
     }
-    //paginacion
+
+    /**
+     * Obtiene una página de personas con paginación y orden descendente por id
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @param page número de página (0 por defecto)
+     * @param size tamaño de página (5 por defecto)
+     * @return ResponseEntity con la página de personas solicitada
+     */
     @GetMapping("/paginado")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Page<Persona>> personaPaginados(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
@@ -52,14 +69,25 @@ public class PersonaController {
         return ResponseEntity.ok(personasPaginados);
     }
 
-
+    /**
+     * Obtiene la lista completa de personas para seleccionar en registro
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las personas en la base de datos
+     */
     @GetMapping("/registro")
     @PreAuthorize("hasAnyRole('ADMIN','REGISTRADOR')")
     public ResponseEntity<List<Persona>> obtenerTodasPersonasRegistrador() {
         List<Persona> personas = personaRepository.findAll();
         return ResponseEntity.ok(personas);
     }
-
+    /**
+     * Crea una nueva persona en la base de datos
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param persona datos para registrar una nueva persona
+     * @return ResponseEntity con la persona creada o error en caso de excepción
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> crearPersona(@RequestBody @Valid DatosRegistroPersona persona) {
@@ -73,7 +101,14 @@ public class PersonaController {
             return ResponseEntity.badRequest().body(error);
         }
     }
-
+    /**
+     * Actualiza una persona existente identificada por su id
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param id identificador de la persona a actualizar
+     * @param personaExistente datos para actualizar la persona
+     * @return ResponseEntity con la persona actualizada o error en caso de excepción
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<?> actualizarPersona(@PathVariable Integer id, @RequestBody DatosActualizarPersona personaExistente){
@@ -87,7 +122,13 @@ public class PersonaController {
             return ResponseEntity.badRequest().body(error);
         }
     }
-
+    /**
+     * Elimina una persona por su id
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param id identificador de la persona a eliminar
+     * @return ResponseEntity sin contenido (204) si se elimina o si no existe
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> eliminarPersona(@PathVariable Integer id){
@@ -97,28 +138,45 @@ public class PersonaController {
     }
 
 
-    /////exportaciones
+    /**
+     * Obtiene la lista completa de personas en excel
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las personas en la base de datos
+     */
     @GetMapping("/exportar/excel")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public void exportarExcel(HttpServletResponse response) throws IOException {
         personaService.exportarExcel(response);
 
     }
-
+    /**
+     * Obtiene la lista completa de personas en pdf
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las personas en la base de datos
+     */
     @GetMapping("/exportar/pdf")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public void exportarPDF(HttpServletResponse response) throws IOException {
         personaService.exportarPDF(response);
 
     }
-    //filtrado
+
+
+    /**
+     * Obtiene la lista completa de personas dependiendo de porque se filtre, id, nombre, email, telefono, direccion, cargo, esstado, id de la oficina y fecha de nacimiento
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las oficinas en la base de datos
+     */
+
     @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<Persona> obtenerPersona(@PathVariable Integer id){
         Optional<Persona> persona = personaRepository.findById(id);
         return persona.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    ///filtros
 
     @GetMapping("/nombre")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")

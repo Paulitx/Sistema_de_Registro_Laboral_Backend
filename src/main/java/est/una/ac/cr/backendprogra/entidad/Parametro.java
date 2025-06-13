@@ -6,7 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
+/**
+ *  * Entidad Parametro, permite la creacion de tablas en la base de datos, ademas de ser la base de informacion de Parametro
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +22,13 @@ public class Parametro {
     private String llave;
     private String valor;
 
+    /**
+     * Métodos getters y setters para los atributos de la entidad
+     * Permiten acceder y modificar:
+     * id: Identificador único del objeto
+     * llave: Clave o nombre del atributo
+     * valor: Valor asociado a la clave
+     */
     public Integer getId() {
         return id;
     }

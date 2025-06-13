@@ -26,7 +26,13 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * Servicio que gestiona las operaciones relacionadas con los registros
+ * Permite registrar, buscar, actualizar y eliminar registros en el sistema
+ *  * aqui se definen todos los metodos que luego serán llamados en el controlador
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Service
 public class RegistroService {
 
@@ -46,6 +52,13 @@ public class RegistroService {
         return registroRepository.findAll();
     }
 
+    /**
+     * Registra una nueva entrada o salida de una persona, actualizando el conteo de personas en la oficina
+     *
+     * @param registroDTO DTO con los datos para crear el registro
+     * @return el nuevo Registro guardado en la base de datos
+     * @throws RuntimeException si la Persona no existe o la validación del registro falla
+     */
     public Registro ingresoRegitro(DatosAgregarRegistro registroDTO){
         Persona persona = personaRepository.findById(registroDTO.personaId()).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
 
@@ -64,6 +77,14 @@ public class RegistroService {
         }
         return registroRepository.save(nuevoRegistro);
     }
+    /**
+     * Actualiza un registro existente con nuevos datos, validando la información antes de guardarla
+     *
+     * @param id           Identificador del registro a actualizar
+     * @param registroDTO  DTO con los datos actualizados del registro
+     * @return             El registro actualizado y guardado en la base de datos
+     * @throws RuntimeException si el registro o la persona relacionada no se encuentran o la validación falla
+     */
     public Registro actualizarRegistro(Integer id, DatosActualizarRegistro registroDTO){
         Registro registroExistente = registroRepository.findById(id).orElseThrow(() ->new RuntimeException("Registro no encontrado"));
         Persona persona = personaRepository.findById(registroDTO.personaId()).orElseThrow(() ->new RuntimeException("Persona no encontrada"));
@@ -75,6 +96,16 @@ public class RegistroService {
         return registroRepository.save(registroExistente);
     }
 
+    /**
+     * Elimina un registro de entrada o salida de una persona y ajusta el conteo actual de personas en la oficina
+     *
+     * <p>Si el registro eliminado es una entrada y no existen salidas posteriores para la persona,
+     * se decrementa el número de personas actuales en la oficina (sin caer por debajo de cero)
+     * Si el registro es una salida y existen entradas previas para la persona se incrementa el número de personas actuales en la oficina.</p>
+     *
+     * @param id El identificador del registro a eliminar.
+     * @throws RuntimeException si el registro no se encuentra.
+     */
     public void eliminarRegistro(Integer id){
         Registro registro = registroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
@@ -107,7 +138,12 @@ public class RegistroService {
 
 
     //exportaciones
-
+    /**
+     * Exporta la lista de registros a un archivo Excel y lo envía en la respuesta HTTP
+     *
+     * @param response la respuesta HTTP para enviar el archivo.
+     * @throws IOException si ocurre un error durante la escritura del archivo.
+     */
     public void exportarExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=registros.xlsx");
@@ -133,7 +169,12 @@ public class RegistroService {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
-
+    /**
+     * Exporta la lista de registros a un archivo pdf y lo envía en la respuesta HTTP
+     *
+     * @param response la respuesta HTTP para enviar el archivo.
+     * @throws IOException si ocurre un error durante la escritura del archivo.
+     */
     public void exportarPDF(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=registros.pdf");

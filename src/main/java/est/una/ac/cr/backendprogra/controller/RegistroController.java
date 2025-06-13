@@ -23,7 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+/**
+ *  * Controlador de registro, permite todas las interacciones con el usuairo, gets, post, put y delete.
+ * tambien lo restringe segun su rol para evitar que usuarios no autorizados entren a secciones que no deben
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @RestController
 @RequestMapping("/api/registro")
 public class RegistroController {
@@ -33,13 +38,29 @@ public class RegistroController {
     @Autowired
     private RegistroService registroService;
 
+
+    /**
+     * Obtiene la lista completa de registros
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las registros en la base de datos
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerTodosRegistro() {
         List<Registro> registros = registroRepository.findAll();
         return ResponseEntity.ok(registros);
     }
-    //paginacion
+
+
+    /**
+     * Obtiene una página de registro con paginación y orden descendente por id
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @param page número de página (0 por defecto)
+     * @param size tamaño de página (5 por defecto)
+     * @return ResponseEntity con la página de registro solicitada
+     */
     @GetMapping("/paginacion")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<Page<Registro>> obtenerRegistros(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
@@ -47,7 +68,13 @@ public class RegistroController {
         Page<Registro> registrosPaginados = registroRepository.findAll(pageable);
         return ResponseEntity.ok(registrosPaginados);
     }
-
+    /**
+     * Crea una nueva registro en la base de datos
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param registro datos para registrar un nuevo registro
+     * @return ResponseEntity con la registro creada o error en caso de excepción
+     */
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
@@ -62,7 +89,14 @@ public class RegistroController {
             return ResponseEntity.badRequest().body(error);
         }
     }
-
+    /**
+     * Actualiza un registro existente identificada por su id
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param id identificador del registro a actualizar
+     * @param registroExistente datos para actualizar el registro
+     * @return ResponseEntity con el registro actualizada o error en caso de excepción
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
         public ResponseEntity<?> actualizarRegistro(@PathVariable Integer id, @RequestBody @Valid DatosActualizarRegistro registroExistente) {
@@ -76,7 +110,13 @@ public class RegistroController {
             return ResponseEntity.badRequest().body(error);
         }
     }
-
+    /**
+     * Elimina un registro por su id
+     * Solo accesible para usuarios con rol ADMIN
+     *
+     * @param id identificador del registro a eliminar
+     * @return ResponseEntity sin contenido (204) si se elimina o si no existe
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR')")
     public ResponseEntity<Void> eliminarRegistro(@PathVariable Integer id) {
@@ -89,19 +129,37 @@ public class RegistroController {
     }
 
 
-    /////exportaciones
+    /**
+     * Obtiene la lista completa de registros en excel
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las registros en la base de datos
+     */
     @GetMapping("/exportar/excel")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public void exportarExcel(HttpServletResponse response) throws IOException {
         registroService.exportarExcel(response);
     }
-
+    /**
+     * Obtiene la lista completa de registros en pdf
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las registros en la base de datos
+     */
     @GetMapping("/exportar/pdf")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public void exportarPDF(HttpServletResponse response) throws IOException {
         registroService.exportarPDF(response);
     }
-    //Filtrado
+
+
+
+    /**
+     * Obtiene la lista completa de registros dependiendo de porque se filtre, id, tipo, fecha y hora y por el id de las personas
+     * Accesible para usuarios con roles ADMIN o VISOR
+     *
+     * @return lista de todas las registros en la base de datos
+     */
     @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<Registro> obtenerPorId(@PathVariable Integer id) {

@@ -3,7 +3,11 @@ package est.una.ac.cr.backendprogra.entidad;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-
+/**
+ *  * Entidad Persona, permite la creacion de tablas en la base de datos, ademas de ser la base de informacion de Persona.
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +27,21 @@ public class Persona {
 
     @ManyToOne
     private Oficina oficina;
+
+    /**
+     * Métodos getters y setters para los atributos de la entidad
+     * Permiten acceder y modificar los siguientes datos:
+     * oficina: Oficina asociada a la persona
+     * fechaNacimiento: Fecha de nacimiento de la persona
+     * direccion: Dirección de residencia
+     * email: Correo electrónico
+     * nombre: Nombre completo
+     * idUsuario: Identificador único de usuario
+     * id: Identificador interno
+     * telefono: Número telefónico
+     * cargo: Cargo o posición laboral
+     * estado: Estado activo/inactivo de la persona
+     */
 
     public Oficina getOficina() {
         return oficina;

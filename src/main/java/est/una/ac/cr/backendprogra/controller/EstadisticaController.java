@@ -14,7 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+/**
+ * controlador que permite visualizar los reportes con estadisticas en el front, aqui se obtienen los datos necesarios
+ *  * tambien lo restringe segun su rol para evitar que usuarios no autorizados entren a secciones que no deben
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @RestController
 @RequestMapping("/api/reportes")
 public class EstadisticaController {
@@ -24,7 +29,12 @@ public class EstadisticaController {
     private RegistroRepository registroRepository;
 
 
-    ////Personas con mas ingresos
+    /**
+     * Obtiene una lista de las personas con más registros de entrada, retorna una lista de mapas con la persona y la cantidad de entradas registradas
+     * Requiere que el usuario tenga rol ADMIN o VISOR
+     *
+     * @return ResponseEntity con la lista de personas y su conteo de entradas
+     */
     @GetMapping("/topPersonas")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerTopPersonasConMasEntradas() {
@@ -38,7 +48,14 @@ public class EstadisticaController {
 
         return ResponseEntity.ok(respuesta);
     }
-    ///oficinas con mas registros de entrada
+
+
+    /**
+     * Obtiene una lista de las oficinas con más registros de entrada, retorna una lista de mapas con la oficina y la cantidad de entradas registradas
+     * Requiere que el usuario tenga rol ADMIN o VISOR
+     *
+     * @return ResponseEntity con la lista de oficinas y su conteo de entradas
+     */
     @GetMapping("/topOficinas")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerTopOficinasConMasEntradas() {
@@ -54,7 +71,13 @@ public class EstadisticaController {
     }
 
 
-    ///cantidad de personas dentro de una oficina
+    /**
+     * Obtiene la lista de personas que actualmente se encuentran dentro de una oficina, personas con registro de entrada sin registro de salida posterior
+     * Retorna una lista de mapas con el nombre de la persona
+     * Requiere que el usuario tenga rol ADMIN o VISOR.
+     *
+     * @return ResponseEntity con la lista de personas actualmente dentro
+     */
     @GetMapping("/personasDentro")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Map<String, Object>>> obtenerPersonasActualmenteDentro() {

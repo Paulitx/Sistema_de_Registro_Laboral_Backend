@@ -11,7 +11,12 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 
 import java.util.List;
-
+/**
+ * Endpoint que gestiona las operaciones relacionadas con personas
+ * Expone el servicio "listarPersonas", que permite obtener la lista completa de personas disponibles
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Endpoint
 public class PersonaEndpoint {
 
@@ -20,6 +25,15 @@ public class PersonaEndpoint {
     @Autowired
     private PersonaService personaService;
 
+
+    /**
+     * Maneja la petición soap para listar todas las personas
+     *
+     * Recibe una solicitud de tipo GetPersonasRequest y devuelve una respuesta GetPersonasResponse que contiene una lista de personas convertidas a objetos OficinaType para el formato soap
+     *
+     * @param request solicitud para obtener las oficinas
+     * @return respuesta con la lista de oficinas disponibles en el sistema
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getPersonasRequest")
     @ResponsePayload
     public GetPersonasResponse listarPersonas(@RequestPayload GetPersonasRequest request) {

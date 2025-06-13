@@ -6,7 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
+/**
+ * Entidad oficina, permite la creacion de tablas en la base de datos, ademas de ser la base de informacion de oficinas
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +35,15 @@ public class Oficina {
     public Integer getId() {
         return id;
     }
-
+    /**
+     * Métodos getters y setters para los atributos de la entidad Oficina
+     * Permiten acceder y modificar los valores de:
+     * id: Identificador único de la oficina
+     * nombre: Nombre de la oficina
+     * ubicacion: Ubicación física de la oficina
+     * limitePersonas: Capacidad máxima de personas permitidas en la oficina
+     * personasActuales: Número actual de personas presentes en la oficina
+     */
     public void setId(Integer id) {
         this.id = id;
     }

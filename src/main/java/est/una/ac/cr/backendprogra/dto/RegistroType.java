@@ -5,7 +5,11 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
 
 import java.time.LocalDateTime;
-
+/**
+ * Obtiene los datos para el xml de registros y poder mostrarlo en con el soap
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RegistroType", propOrder = {
         "id",
@@ -18,6 +22,13 @@ public class RegistroType {
     private String tipo;
     private LocalDateTime fechaHora;
 
+
+    /**
+     * Métodos getters y setters para los atributos de la clase Registro:
+     * id: identificador único del registro
+     * tipo: tipo de registro
+     * fechaHora: fecha y hora en que se realizó el registro
+     */
     public Integer getId() {
         return id;
     }

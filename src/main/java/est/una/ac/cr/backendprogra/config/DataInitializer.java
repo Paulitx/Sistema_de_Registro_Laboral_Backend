@@ -8,7 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+/**
+ * Configuration que establece los roles de los usuarios de manera previa para los accesos y permisos.
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Configuration
 public class DataInitializer {
 
@@ -19,6 +23,11 @@ public class DataInitializer {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Bean que se ejecuta al iniciar la aplicación para poblar la base de datos con usuarios predeterminados si no hay ninguno registrado
+     *
+     * @return CommandLineRunner que realiza la inicialización.
+     */
     @Bean
     CommandLineRunner initDatabase() {
         return args -> {

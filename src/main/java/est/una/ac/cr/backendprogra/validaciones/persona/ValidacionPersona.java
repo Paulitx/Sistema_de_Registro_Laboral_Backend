@@ -7,11 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Component encargado de las validaciones principales para el agregar y actualziar de persona
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Component
 public class ValidacionPersona {
 
 
+    /**
+     * Valida los datos de una persona asegurando que cumplan las reglas de negocio
+     *
+     * @param persona La persona a validar
+     * @throws RuntimeException si alguna validación falla, con un mensaje indicando el problema:
+     *   idUsuario no puede estar vacío
+     *   nombre no puede estar vacío
+     *   email no puede estar vacío
+     *   email debe tener un formato válido
+     *   fechaNacimiento es obligatoria y no puede ser una fecha futura
+     *   estado no puede ser nulo
+     *   oficina no puede ser nula
+     */
     public void validar(Persona persona) {
         if (persona.getIdUsuario() == null || persona.getIdUsuario().isEmpty()) {
             throw new RuntimeException("El idUsuario no puede estar vacío");

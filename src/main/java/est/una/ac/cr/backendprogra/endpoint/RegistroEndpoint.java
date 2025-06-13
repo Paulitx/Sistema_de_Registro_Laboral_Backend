@@ -10,7 +10,12 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.util.List;
-
+/**
+ * Endpoint que gestiona las operaciones relacionadas con registros
+ * Expone el servicio "listarRegistros", que permite obtener la lista completa de registros disponibles
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Endpoint
 public class RegistroEndpoint {
 
@@ -19,6 +24,15 @@ public class RegistroEndpoint {
     @Autowired
     private RegistroService registroService;
 
+
+    /**
+     * Método soap que maneja la solicitud para listar todos los registros
+     *
+     * @param request Objeto que representa la solicitud SOAP para obtener registros
+     * @return GetRegistrosResponse Objeto que contiene la lista de registros convertidos a RegistroType para la respuesta soap
+     *
+     * Este método obtiene todos los registros desde el servicio, los convierte a tipos SOAP y los agrega a la respuesta.
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRegistrosRequest")
     @ResponsePayload
     public GetRegistrosResponse listarRegistros(@RequestPayload GetRegistrosRequest request) {

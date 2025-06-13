@@ -8,9 +8,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * repositorio de oficinac JPA para la conexion y llamado de datos con la base de datos
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Repository
 public interface OficinaRepository extends JpaRepository<Oficina, Integer> {
+
+    /**
+     * Metodos de consulta personalizados para buscar oficinas según diferentes criterios:
+     * buscarPorNombre: busca oficinas cuyo nombre contiene la cadena especificada
+     * buscarPorUbicacion: busca oficinas cuya ubicación contiene la cadena especificada
+     * buscarPorLimitePersonas: busca oficinas que tienen un límite exacto de personas
+     * buscarPorPersonasActuales: busca oficinas que tienen una cantidad exacta de personas actuales
+     */
 
     @Query("SELECT o FROM Oficina o WHERE (o.nombre) LIKE (CONCAT('%', :nombre, '%'))")
     List<Oficina> buscarPorNombre(@Param("nombre") String nombre);

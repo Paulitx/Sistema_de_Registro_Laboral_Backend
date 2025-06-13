@@ -6,7 +6,11 @@ import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 
 import java.time.LocalDate;
-
+/**
+ * Obtiene los datos para el xml de personas y poder mostrarlo en con el soap
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PersonaType", propOrder = {
         "id",
@@ -31,6 +35,19 @@ public class PersonaType {
     private String cargo;
     private Boolean estado;
 
+
+    /**
+     * Métodos getters y setters para los atributos de la clase persona:
+     * id: identificador único del persona
+     * idUsuario: identificador personalizado o externo del persona
+     * nombre: nombre completo del persona
+     * email: correo electrónico del persona
+     * direccion: dirección física del persona
+     * fechaNacimiento: fecha de nacimiento del persona
+     * telefono: número telefónico del persona
+     * cargo: posición o rol del persona dentro de la organización
+     * estado: estado activo o inactivo del persona
+     */
     public Integer getId() {
         return id;
     }

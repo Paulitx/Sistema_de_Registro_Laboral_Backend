@@ -21,7 +21,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * Servicio que gestiona las operaciones relacionadas con las oficinas
+ * Permite registrar, buscar, actualizar y eliminar oficinas en el sistema
+ * * aqui se definen todos los metodos que luego serán llamados en el controlador
+ *
+ * @author Luis Felipe Méndez González-Paula Vargas Campos
+ */
 @Service
 public class OficinaService {
 
@@ -32,6 +38,19 @@ public class OficinaService {
 
     public List<Oficina> listarOficinas() { return oficinaRepository.findAll(); }
 
+    /**
+     * Crea y guarda una nueva oficina a partir de los datos proporcionados
+     *
+     * Crea un nuevo objeto Oficina
+     * Asigna nombre, ubicación y límite de personas desde el DTO recibido
+     * Inicializa el conteo de personas actuales en 0
+     * Valida la oficina con las reglas definidas en `validacionOficina`
+     * Guarda la oficina en la base de datos mediante `oficinaRepository`
+     *
+     * @param oficinaDTO datos necesarios para crear la oficina
+     * @return la oficina guardada con su ID asignado
+     * @throws RuntimeException si la validación falla
+     */
     public Oficina ingresoOficina(DatosRegistroOficina oficinaDTO) {
         Oficina oficina = new Oficina();
         oficina.setNombre(oficinaDTO.nombre());
@@ -42,6 +61,21 @@ public class OficinaService {
         validacionOficina.validar(oficina);
         return oficinaRepository.save(oficina);
     }
+
+    /**
+     * Actualiza los datos de una oficina existente identificada por su ID
+     *
+     *
+     * Busca la oficina en la base de datos, lanzando excepción si no existe
+     * Actualiza nombre, ubicación y límite de personas con los datos del DTO recibido
+     * Valida la oficina actualizada con `validacionOficina`
+     * Guarda los cambios en la base de datos
+     *
+     * @param id el identificador de la oficina a actualizar
+     * @param oficinaDTO datos nuevos para actualizar la oficina
+     * @return la oficina actualizada
+     * @throws RuntimeException si la oficina no existe o la validación falla
+     */
     public Oficina actualizaOficina(Integer id, DatosActualizarOficina oficinaDTO) {
         Oficina oficina = oficinaRepository.findById(id).orElseThrow(() -> new RuntimeException("Oficina no encontrada"));
 
@@ -51,7 +85,12 @@ public class OficinaService {
         validacionOficina.validar(oficina);
         return oficinaRepository.save(oficina);
     }
-
+    /**
+     * Exporta la lista de oficinas a un archivo Excel y lo envía en la respuesta HTTP
+     *
+     * @param response la respuesta HTTP para enviar el archivo.
+     * @throws IOException si ocurre un error durante la escritura del archivo.
+     */
     public void exportarExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=oficinas.xlsx");
@@ -81,7 +120,12 @@ public class OficinaService {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
-
+    /**
+     * Exporta la lista de oficinas a un archivo pdf y lo envía en la respuesta HTTP
+     *
+     * @param response la respuesta HTTP para enviar el archivo.
+     * @throws IOException si ocurre un error durante la escritura del archivo.
+     */
     public void exportarPDF(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=oficinas.pdf");
