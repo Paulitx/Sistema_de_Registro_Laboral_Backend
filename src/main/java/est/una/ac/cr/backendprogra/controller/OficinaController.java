@@ -93,7 +93,7 @@ public class OficinaController {
         List<Oficina> listado = oficinaRepository.buscarPorNombre(nombre);
         return ResponseEntity.ok(listado);
     }
-    @GetMapping("/Ubicacion")
+    @GetMapping("/ubicacion")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
     public ResponseEntity<List<Oficina>> obtenerOficinaUbicacion(@RequestParam String ubicacion){
         List<Oficina> listado = oficinaRepository.buscarPorUbicacion(ubicacion);
