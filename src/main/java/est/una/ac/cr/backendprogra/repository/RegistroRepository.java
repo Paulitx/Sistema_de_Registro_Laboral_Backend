@@ -3,6 +3,7 @@ package est.una.ac.cr.backendprogra.repository;
 import est.una.ac.cr.backendprogra.entidad.Registro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -19,10 +20,12 @@ public interface RegistroRepository extends JpaRepository<Registro, Integer> {
     boolean existsByPersonaIdAndTipoAndFechaHoraBefore(Integer personaId, String tipo, LocalDateTime fechaHora);
 
 
-    List<Registro> findByTipoContainingIgnoreCase(String tipo);
-    List<Registro> findByFechaHora(LocalDateTime fechaHora);
-    List<Registro> findByPersonaId(Integer personaId);
-
+    @Query("SELECT r FROM Registro r WHERE LOWER(r.tipo) LIKE LOWER(CONCAT('%', :tipo, '%'))")
+    List<Registro> buscarPorTipoRegitro(@Param("tipo") String tipo);
+    @Query("SELECT r FROM Registro r WHERE r.fechaHora = :fechaHora")
+    List<Registro> buscarPorFechaHoraExacta(@Param("fechaHora") LocalDateTime fechaHora);
+    @Query("SELECT r FROM Registro r WHERE r.persona.id = :personaId")
+    List<Registro> buscarPorIdPersona(@Param("personaId") Integer personaId);
 
     ///estadisticas, llamados a la base de datos para obtrener los datos para los graficos
 

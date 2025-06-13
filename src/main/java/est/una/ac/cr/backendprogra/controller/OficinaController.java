@@ -6,6 +6,7 @@ import est.una.ac.cr.backendprogra.records.oficina.DatosActualizarOficina;
 import est.una.ac.cr.backendprogra.records.oficina.DatosRegistroOficina;
 import est.una.ac.cr.backendprogra.repository.OficinaRepository;
 import est.una.ac.cr.backendprogra.service.OficinaService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,23 @@ public class OficinaController {
         oficina.ifPresent(value -> oficinaRepository.delete(value));
         return ResponseEntity.noContent().build();
     }
+
+
+
+    /////exportaciones
+    @GetMapping("/exportar/excel")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VISOR')")
+    public void exportarExcel(HttpServletResponse response) throws IOException {
+        oficinaService.exportarExcel(response);
+    }
+
+    @GetMapping("/exportar/pdf")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VISOR')")
+    public void exportarPDF(HttpServletResponse response) throws IOException {
+        oficinaService.exportarPDF(response);
+    }
+
+
 
     ///filtrado
     @GetMapping("/id/{id}")

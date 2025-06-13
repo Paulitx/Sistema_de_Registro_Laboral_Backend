@@ -102,7 +102,7 @@ public class RegistroController {
         registroService.exportarPDF(response);
     }
     //Filtrado
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<Registro> obtenerPorId(@PathVariable Integer id) {
         Optional<Registro> registro = registroRepository.findById(id);
@@ -112,19 +112,19 @@ public class RegistroController {
     @GetMapping("/tipo")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroTipo(@RequestParam String tipo){
-        List<Registro> listado = registroRepository.findByTipoContainingIgnoreCase(tipo);
+        List<Registro> listado = registroRepository.buscarPorTipoRegitro(tipo);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/fechaHora")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroFechaHora(@RequestParam LocalDateTime fechaHora){
-        List<Registro> listado = registroRepository.findByFechaHora(fechaHora);
+        List<Registro> listado = registroRepository.buscarPorFechaHoraExacta(fechaHora);
         return ResponseEntity.ok(listado);
     }
     @GetMapping("/persona")
     @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRADOR', 'VISOR')")
     public ResponseEntity<List<Registro>> obtenerRegistroTelefono(@RequestParam Integer personaId){
-        List<Registro> listado = registroRepository.findByPersonaId(personaId);
+        List<Registro> listado = registroRepository.buscarPorIdPersona(personaId);
         return ResponseEntity.ok(listado);
     }
 }
