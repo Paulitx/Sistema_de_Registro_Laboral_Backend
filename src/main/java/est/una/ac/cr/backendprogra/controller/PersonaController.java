@@ -165,7 +165,7 @@ public class PersonaController {
 
 
     /**
-     * Obtiene la lista completa de personas dependiendo de porque se filtre, id, nombre, email, telefono, direccion, cargo, esstado, id de la oficina y fecha de nacimiento
+     * Obtiene la lista completa de personas dependiendo de porque se filtre, id, idUsuario, nombre, email, telefono, direccion, cargo, esstado, id de la oficina y fecha de nacimiento
      * Accesible para usuarios con roles ADMIN o VISOR
      *
      * @return lista de todas las oficinas en la base de datos
@@ -185,6 +185,12 @@ public class PersonaController {
         return ResponseEntity.ok(listado);
     }
 
+    @GetMapping("/idUsuario")
+    @PreAuthorize("hasAnyRole('ADMIN','VISOR')")
+    public ResponseEntity<List<Persona>> obtenerPersonaidUsuario(@RequestParam String idUsuario) {
+        List<Persona> listado = personaRepository.buscarPoridUsuario(idUsuario);
+        return ResponseEntity.ok(listado);
+    }
 
     @GetMapping("/email")
     @PreAuthorize("hasAnyRole('ADMIN','VISOR')")

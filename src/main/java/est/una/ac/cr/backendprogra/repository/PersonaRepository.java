@@ -31,6 +31,9 @@ public interface PersonaRepository extends JpaRepository<Persona, Integer> {
     @Query("SELECT p FROM Persona p WHERE (p.nombre) LIKE (CONCAT('%', :nombre, '%'))")
     List<Persona> buscarPorNombre(@Param("nombre") String nombre);
 
+    @Query("SELECT p FROM Persona p WHERE p.idUsuario LIKE CONCAT('%', :idUsuario, '%')")
+    List<Persona> buscarPoridUsuario(@Param("idUsuario") String idUsuario);
+
     @Query("SELECT p FROM Persona p WHERE LOWER(p.email) LIKE LOWER(CONCAT('%', :email, '%'))")
     List<Persona> buscarPorEmail(@Param("email") String email);
 
