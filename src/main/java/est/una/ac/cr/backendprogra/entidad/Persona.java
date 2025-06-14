@@ -1,6 +1,8 @@
 package est.una.ac.cr.backendprogra.entidad;
 
+import est.una.ac.cr.backendprogra.entidad.adaptadores.adaptadorLocalDate;
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.*;
 import java.time.LocalDate;
 /**
@@ -20,6 +22,7 @@ public class Persona {
     private String nombre;
     private String email;
     private String direccion;
+
     private LocalDate fechaNacimiento;
     private String telefono;
     private String cargo;

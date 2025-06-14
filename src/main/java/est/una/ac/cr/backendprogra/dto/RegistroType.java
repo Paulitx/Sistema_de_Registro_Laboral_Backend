@@ -1,8 +1,10 @@
 package est.una.ac.cr.backendprogra.dto;
 
+import est.una.ac.cr.backendprogra.entidad.adaptadores.adaptadorLocalDateTime;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import java.time.LocalDateTime;
 /**
@@ -20,6 +22,8 @@ public class RegistroType {
 
     private Integer id;
     private String tipo;
+
+    @XmlJavaTypeAdapter(adaptadorLocalDateTime.class)
     private LocalDateTime fechaHora;
 
 

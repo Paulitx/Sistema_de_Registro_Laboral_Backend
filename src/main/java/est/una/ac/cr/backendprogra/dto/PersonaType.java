@@ -1,8 +1,10 @@
 package est.una.ac.cr.backendprogra.dto;
 
+import est.una.ac.cr.backendprogra.entidad.adaptadores.adaptadorLocalDate;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -30,6 +32,7 @@ public class PersonaType {
     private String nombre;
     private String email;
     private String direccion;
+    @XmlJavaTypeAdapter(adaptadorLocalDate.class)
     private LocalDate fechaNacimiento;
     private String telefono;
     private String cargo;
